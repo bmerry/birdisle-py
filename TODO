@@ -1,0 +1,13 @@
+- restartServer
+- serverPanic
+- SHUTDOWN command
+- OOM handler
+- timezone malarky
+- random seeding
+- signal handlers
+- TCP listen
+- open file limit
+- logging
+
+- Free server.bio on shutdown
+- anet: handle EINTR

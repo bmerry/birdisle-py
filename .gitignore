@@ -1,0 +1,6 @@
+_birdisle.c
+_birdisle.o
+_birdisle*.so
+/dist
+/wheelhouse
+*.egg-info
