@@ -4,10 +4,10 @@
 - OOM handler
 - timezone malarky
 - random seeding
-- signal handlers
 - TCP listen
-- open file limit
+- locale
 - logging
-
-- Free server.bio on shutdown
+- Work out linking - need to either install libbirdisle.so or just remove it
+  and make it the user's problem
 - anet: handle EINTR
+- automate building manylinux1 wheels
