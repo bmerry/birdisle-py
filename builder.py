@@ -18,7 +18,7 @@ ffibuilder.set_source("birdisle._birdisle", """
     libraries=['birdisle'],
     include_dirs=['src/src'],
     library_dirs=['src/src'],
-    runtime_library_dirs=['src/src'])
+    runtime_library_dirs=['$ORIGIN/.libs'])
 
 if __name__ == '__main__':
     ffibuilder.compile(verbose=True)
