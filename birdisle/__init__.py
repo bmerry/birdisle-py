@@ -16,7 +16,7 @@ _meta_write = None
 def _server(meta_read):
     argv_values = [_birdisle.ffi.new('char[]', b'redis'),
                    _birdisle.ffi.new('char[]', b'--port'),
-                   _birdisle.ffi.new('char[]', b'6379')]
+                   _birdisle.ffi.new('char[]', b'0')]
     argv = _birdisle.ffi.new("char *[4]", argv_values)
     _birdisle.lib.redisMain(meta_read, 3, argv)
 
