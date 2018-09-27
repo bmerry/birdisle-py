@@ -4,3 +4,4 @@ _birdisle*.so
 /dist
 /wheelhouse
 *.egg-info
+.cache
