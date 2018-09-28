@@ -1,4 +1,4 @@
-- multiple server instances
+- disable all fork() code
 - restartServer
 - serverPanic
 - SHUTDOWN command

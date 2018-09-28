@@ -7,15 +7,17 @@ import birdisle
 
 
 def main():
-    birdisle.start()
+    server = birdisle.Server()
     s = socket.socket()
     s.bind(('127.0.0.1', 6380))
     s.listen(5)
-    while True:
-        conn, addr = s.accept()
-        with contextlib.closing(conn):
-            fd = os.dup(conn.fileno())
-            birdisle.add_fd(os.dup(conn.fileno()))
+    try:
+        while True:
+            conn, addr = s.accept()
+            with contextlib.closing(conn):
+                server.add_connection(os.dup(conn.fileno()))
+    except KeyboardInterrupt:
+        server.close()
 
 
 if __name__ == '__main__':
