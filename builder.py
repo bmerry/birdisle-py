@@ -9,7 +9,7 @@ subprocess.check_call(['make', '-C', 'src'])
 
 ffibuilder = FFI()
 ffibuilder.cdef("""
-    typedef struct birdisleServer *birdisleServer;
+    typedef struct birdisleServer birdisleServer;
 
     birdisleServer *birdisleStartServer(void);
     int birdisleStopServer(birdisleServer *handle);
