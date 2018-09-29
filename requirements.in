@@ -1,3 +1,4 @@
 cffi
 redis
 pytest
+pytest-forked

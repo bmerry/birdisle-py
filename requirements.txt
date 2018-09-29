@@ -11,6 +11,7 @@ more-itertools==4.3.0     # via pytest
 pluggy==0.7.1             # via pytest
 py==1.6.0                 # via pytest
 pycparser==2.19           # via cffi
+pytest-forked==0.2
 pytest==3.8.1
 redis==2.10.6
 six==1.11.0               # via more-itertools, pytest
