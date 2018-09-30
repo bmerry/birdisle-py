@@ -55,6 +55,11 @@ def test_lua(r):
     assert result == b'bar'
 
 
+def test_info(r):
+    """Test that the INFO command works"""
+    r.info()
+
+
 def test_blocking(r):
     def worker(r):
         time.sleep(0.1)
