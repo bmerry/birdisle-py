@@ -95,7 +95,7 @@ class LocalSocketConnection(redis.connection.Connection):
                 (exception.args[0], exception.args[1])
 
 
-def StrictRedis(host='localhost', port=6379,
+def _wrap_redis(cls, host='localhost', port=6379,
                 db=0, password=None, socket_timeout=None,
                 socket_connect_timeout=None,
                 socket_keepalive=None, socket_keepalive_options=None,
@@ -132,10 +132,18 @@ def StrictRedis(host='localhost', port=6379,
             'server': server
         }
         connection_pool = redis.connection.ConnectionPool(**kwargs)
-    return redis.StrictRedis(
+    return cls(
         host, port, db, password, socket_timeout, socket_connect_timeout,
         socket_keepalive, socket_keepalive_options, connection_pool,
         unix_socket_path, encoding, encoding_errors, charset, errors,
         decode_responses, retry_on_timeout,
         ssl, ssl_keyfile, ssl_certfile, ssl_cert_reqs, ssl_ca_certs,
         max_connections)
+
+
+def StrictRedis(*args, **kwargs):
+    return _wrap_redis(redis.StrictRedis, *args, **kwargs)
+
+
+def Redis(*args, **kwargs):
+    return _wrap_redis(redis.Redis, *args, **kwargs)
