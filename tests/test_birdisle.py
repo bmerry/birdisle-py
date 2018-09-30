@@ -1,6 +1,8 @@
 import time
 import threading
 import locale
+import socket
+import resource
 
 import redis
 import birdisle
@@ -10,6 +12,16 @@ import pytest
 @pytest.fixture
 def r():
     return birdisle.StrictRedis()
+
+
+@pytest.fixture
+def limit_fds():
+    """Reduce the maximum allowed file descriptors."""
+    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+    new_soft = min(hard, 128)
+    resource.setrlimit(resource.RLIMIT_NOFILE, (new_soft, hard))
+    yield new_soft
+    resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
 
 
 def test_simple(r):
@@ -53,3 +65,12 @@ def test_blocking(r):
     result = r.blpop('foo')
     assert result == (b'foo', b'bar')
     thread.join()
+
+
+def test_fd_leak(limit_fds):
+    """Servers must not leak file descriptors"""
+    for i in range(limit_fds + 1):
+        server = birdisle.Server()
+        client = server.connect()
+        server.close()
+        client.close()
