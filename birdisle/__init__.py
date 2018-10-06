@@ -1,11 +1,16 @@
 import socket
 import os
 import warnings
+import threading
 
 import redis
 import redis.connection
 
 from . import _birdisle
+
+
+_singleton_server = None
+_singleton_lock = threading.Lock()
 
 
 class Server(object):
@@ -107,7 +112,7 @@ def _wrap_redis(cls, host='localhost', port=6379,
                 decode_responses=False, retry_on_timeout=False,
                 ssl=False, ssl_keyfile=None, ssl_certfile=None,
                 ssl_cert_reqs=None, ssl_ca_certs=None,
-                max_connections=None, server=None):
+                max_connections=None, server=None, singleton=True):
     if not connection_pool:
         # Adapted from redis-py
         if charset is not None:
@@ -120,7 +125,14 @@ def _wrap_redis(cls, host='localhost', port=6379,
             encoding_errors = errors
 
         if server is None:
-            server = Server()
+            if singleton:
+                global _singleton_server
+                with _singleton_lock:
+                    if _singleton_server is None:
+                        _singleton_server = Server()
+                    server = _singleton_server
+            else:
+                server = Server()
         kwargs = {
             'db': db,
             'password': password,

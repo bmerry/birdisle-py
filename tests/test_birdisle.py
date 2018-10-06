@@ -11,7 +11,7 @@ import pytest
 
 @pytest.fixture
 def r():
-    return birdisle.StrictRedis()
+    return birdisle.StrictRedis(singleton=False)
 
 
 @pytest.fixture
@@ -79,3 +79,12 @@ def test_fd_leak(limit_fds):
         client = server.connect()
         server.close()
         client.close()
+
+
+def test_singleton():
+    a = birdisle.StrictRedis()
+    b = birdisle.StrictRedis()
+    a.flushall()
+    b.flushall()
+    a.set('foo', 'bar')
+    assert b.get('foo') == b'bar'
