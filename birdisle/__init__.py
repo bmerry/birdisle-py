@@ -1,7 +1,6 @@
 import socket
-import threading
 import os
-import struct
+import warnings
 
 import redis
 import redis.connection
@@ -13,7 +12,8 @@ class Server(object):
     def __init__(self):
         self._handle = _birdisle.lib.birdisleStartServer()
         if self._handle == _birdisle.ffi.NULL:
-            raise OSError(_birdisle.ffi.errno, "Failed to create birdisle server")
+            raise OSError(_birdisle.ffi.errno,
+                          "Failed to create birdisle server")
 
     def add_connection(self, fd):
         if self._handle is None:
@@ -24,8 +24,8 @@ class Server(object):
         if self._handle is None:
             raise RuntimeError("Server is already closed")
         socks = list(socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM))
-        # Python owns the FD within the socket, so to give ownership to birdisle
-        # we have to duplicate it.
+        # Python owns the FD within the socket, so to give ownership to
+        # birdisle we have to duplicate it.
         fd = None
         try:
             fd = os.dup(socks[0].fileno())
@@ -62,14 +62,16 @@ class LocalSocketConnection(redis.connection.Connection):
                  socket_timeout=None, encoding='utf-8',
                  encoding_errors='strict', decode_responses=False,
                  retry_on_timeout=False,
-                 parser_class=redis.connection.DefaultParser, socket_read_size=65536):
+                 parser_class=redis.connection.DefaultParser,
+                 socket_read_size=65536):
         # This code is mostly copied from redis.connection.UnixConnection
         self.pid = os.getpid()
         self.db = 0
         self.password = password
         self.socket_timeout = socket_timeout
         self.retry_on_timeout = retry_on_timeout
-        self.encoder = redis.connection.Encoder(encoding, encoding_errors, decode_responses)
+        self.encoder = redis.connection.Encoder(
+            encoding, encoding_errors, decode_responses)
         self._server = server
         self._sock = None
         self._parser = parser_class(socket_read_size=socket_read_size)
@@ -84,7 +86,7 @@ class LocalSocketConnection(redis.connection.Connection):
         sock.settimeout(self.socket_timeout)
         return sock
 
-    def _error_message(self):
+    def _error_message(self, exception):
         # args for socket.error can either be (errno, "message")
         # or just "message"
         if len(exception.args) == 1:
