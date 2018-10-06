@@ -72,6 +72,16 @@ def test_blocking(r):
     thread.join()
 
 
+def test_pubsub(r):
+    ps = r.pubsub()
+    ps.subscribe('channel')
+    r.publish('channel', 'hello')
+    msg = ps.get_message(timeout=10)   # Subscribe message
+    msg = ps.get_message(timeout=10)
+    assert msg == {'channel': b'channel', 'pattern': None,
+                   'type': 'message', 'data': b'hello'}
+
+
 def test_fd_leak(limit_fds):
     """Servers must not leak file descriptors"""
     for i in range(limit_fds + 1):
