@@ -1,0 +1,17 @@
+exclude .gitignore
+exclude requirements.in
+exclude requirements.txt
+graft src
+recursive-exclude src .make*
+recursive-exclude src *.o *.a *.so *.so.* *.log dump.rdb appendonly.aof Makefile.dep
+prune src/.git
+exclude src/src/redis-benchmark
+exclude src/src/redis-check-aof
+exclude src/src/redis-check-rdb
+exclude src/src/redis-check-dump
+exclude src/src/redis-cli
+exclude src/src/redis-sentinel
+exclude src/src/redis-server
+exclude src/src/release.h
+exclude src/deps/lua/src/lua
+exclude src/deps/lua/src/luac
