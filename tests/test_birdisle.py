@@ -3,6 +3,7 @@ import threading
 import locale
 import socket
 import resource
+import signal
 
 import redis
 import birdisle
@@ -22,6 +23,20 @@ def limit_fds():
     resource.setrlimit(resource.RLIMIT_NOFILE, (new_soft, hard))
     yield new_soft
     resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
+
+
+@pytest.fixture
+def profile_timer():
+    def call(interval, handler):
+        old_handler = signal.signal(signal.SIGALRM, handler)
+        old_delay, old_interval = signal.setitimer(signal.ITIMER_REAL, interval, interval)
+        cleanup.append((old_delay, old_interval, old_handler))
+
+    cleanup = []
+    yield call
+    if cleanup:
+        signal.setitimer(signal.ITIMER_REAL, cleanup[0][0], cleanup[0][1])
+        signal.signal(signal.SIGALRM, cleanup[0][2])
 
 
 def test_simple(r):
@@ -104,3 +119,14 @@ def test_non_strict():
     r = birdisle.Redis(singleton=False)
     r.zadd('foo', 'bar', 3)
     assert r.zrange('foo', 0, -1, withscores=True) == [(b'bar', 3)]
+
+
+def test_signals(r, profile_timer):
+    """Test that signal delivery doesn't interfere with birdisle"""
+    def handler(signum, frame):
+        pass
+
+    profile_timer(1e-4, handler)
+    data = b'?' * 10000
+    for i in range(10000):
+        r.set('foo', data)
