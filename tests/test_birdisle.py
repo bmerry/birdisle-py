@@ -88,3 +88,9 @@ def test_singleton():
     b.flushall()
     a.set('foo', 'bar')
     assert b.get('foo') == b'bar'
+
+
+def test_non_strict():
+    r = birdisle.Redis(singleton=False)
+    r.zadd('foo', 'bar', 3)
+    assert r.zrange('foo', 0, -1, withscores=True) == [(b'bar', 3)]
