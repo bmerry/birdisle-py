@@ -7,12 +7,13 @@ import signal
 
 import redis
 import birdisle
+import birdisle.redis
 import pytest
 
 
 @pytest.fixture
 def r():
-    return birdisle.StrictRedis(singleton=False)
+    return birdisle.redis.StrictRedis(singleton=False)
 
 
 @pytest.fixture
@@ -55,7 +56,7 @@ def test_locale():
         pytest.skip()
     # Confirm that this is a locale which doesn't use the decimal point
     assert locale.format('%g', 1.5) == '1,5'
-    r = birdisle.StrictRedis()
+    r = birdisle.redis.StrictRedis()
     r.set('foo', b'1.5')
     r.incrbyfloat('foo', b'0.25')
     assert r.get('foo') == b'1.75'
@@ -107,8 +108,8 @@ def test_fd_leak(limit_fds):
 
 
 def test_singleton():
-    a = birdisle.StrictRedis()
-    b = birdisle.StrictRedis()
+    a = birdisle.redis.StrictRedis()
+    b = birdisle.redis.StrictRedis()
     a.flushall()
     b.flushall()
     a.set('foo', 'bar')
@@ -116,7 +117,7 @@ def test_singleton():
 
 
 def test_non_strict():
-    r = birdisle.Redis(singleton=False)
+    r = birdisle.redis.Redis(singleton=False)
     r.zadd('foo', 'bar', 3)
     assert r.zrange('foo', 0, -1, withscores=True) == [(b'bar', 3)]
 

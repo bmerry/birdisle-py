@@ -27,7 +27,10 @@ setup(
     packages=find_packages(),
     package_data={'birdisle': ['.libs/libbirdisle.so.*']},
     setup_requires=['cffi>=1.0.0'],
-    install_requires=['cffi>=1.0.0', 'redis'],
+    install_requires=['cffi>=1.0.0'],
+    extras_require={
+        'redis': 'redis'
+    },
     tests_require=['pytest', 'pytest-forked'],
     cffi_modules=['builder.py:ffibuilder']
 )
