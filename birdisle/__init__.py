@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import socket
 import os
 import threading
@@ -62,5 +64,5 @@ class Server(object):
     def __del__(self):
         # During interpreter shutdown, _birdisle may have been reset
         # to None.
-        if self._handle is not None and _birdisle is not None:
+        if self._handle is not None and _birdisle is not None and _birdisle.lib is not None:
             self.close()

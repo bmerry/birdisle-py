@@ -2,3 +2,10 @@ cffi
 redis
 pytest
 pytest-forked
+
+aioredis; python_version>="3.5"
+pytest-asyncio; python_version>="3.5"
+async-generator; python_version>="3.5"
+# The following are not direct requirements, but are added because pip-compile
+# doesn't propagate environment markers to dependencies.
+async-timeout; python_version>="3.5"

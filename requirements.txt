@@ -4,14 +4,20 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+aioredis==1.1.0 ; python_version >= "3.5"
+async-generator==1.10 ; python_version >= "3.5"
+async-timeout==2.0.1 ; python_version >= "3.5"
 atomicwrites==1.2.1       # via pytest
 attrs==18.2.0             # via pytest
 cffi==1.11.5
+hiredis==0.2.0            # via aioredis
 more-itertools==4.3.0     # via pytest
+pathlib2==2.3.2           # via pytest
 pluggy==0.7.1             # via pytest
-py==1.6.0                 # via pytest
+py==1.7.0                 # via pytest
 pycparser==2.19           # via cffi
+pytest-asyncio==0.9.0 ; python_version >= "3.5"
 pytest-forked==0.2
-pytest==3.8.1
+pytest==3.8.2
 redis==2.10.6
-six==1.11.0               # via more-itertools, pytest
+six==1.11.0               # via more-itertools, pathlib2, pytest
