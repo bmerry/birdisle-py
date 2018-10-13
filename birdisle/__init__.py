@@ -2,13 +2,8 @@ from __future__ import absolute_import
 
 import socket
 import os
-import threading
 
 from . import _birdisle
-
-
-_singleton_server = None
-_singleton_lock = threading.Lock()
 
 
 class Server(object):
@@ -53,16 +48,10 @@ class Server(object):
         if ret != 0:
             raise RuntimeError('birdisle server had exit code {}'.format(ret))
 
-    @staticmethod
-    def singleton():
-        global _singleton_server
-        with _singleton_lock:
-            if _singleton_server is None:
-                _singleton_server = Server()
-            return _singleton_server
-
     def __del__(self):
         # During interpreter shutdown, _birdisle may have been reset
         # to None.
-        if self._handle is not None and _birdisle is not None and _birdisle.lib is not None:
+        if (self._handle is not None
+                and _birdisle is not None
+                and _birdisle.lib is not None):
             self.close()

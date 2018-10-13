@@ -12,8 +12,16 @@ import pytest
 
 
 @pytest.fixture
-def r():
-    return birdisle.redis.StrictRedis(singleton=False)
+def server():
+    server = birdisle.Server()
+    yield server
+    server.close()
+
+
+@pytest.fixture
+def r(server):
+    redis = birdisle.redis.StrictRedis(server=server)
+    yield redis
 
 
 @pytest.fixture
@@ -107,17 +115,17 @@ def test_fd_leak(limit_fds):
         client.close()
 
 
-def test_singleton():
-    a = birdisle.redis.StrictRedis()
-    b = birdisle.redis.StrictRedis()
+def test_shared_server(server):
+    a = birdisle.redis.StrictRedis(server=server)
+    b = birdisle.redis.StrictRedis(server=server)
     a.flushall()
     b.flushall()
     a.set('foo', 'bar')
     assert b.get('foo') == b'bar'
 
 
-def test_non_strict():
-    r = birdisle.redis.Redis(singleton=False)
+def test_non_strict(server):
+    r = birdisle.redis.Redis(server=server)
     r.zadd('foo', 'bar', 3)
     assert r.zrange('foo', 0, -1, withscores=True) == [(b'bar', 3)]
 

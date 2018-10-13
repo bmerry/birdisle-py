@@ -62,7 +62,7 @@ class RedisMixin(object):
                  decode_responses=False, retry_on_timeout=False,
                  ssl=False, ssl_keyfile=None, ssl_certfile=None,
                  ssl_cert_reqs=None, ssl_ca_certs=None,
-                 max_connections=None, server=None, singleton=True):
+                 max_connections=None, server=None):
         if not connection_pool:
             # Adapted from redis-py
             if charset is not None:
@@ -75,10 +75,7 @@ class RedisMixin(object):
                 encoding_errors = errors
 
             if server is None:
-                if singleton:
-                    server = birdisle.Server.singleton()
-                else:
-                    server = birdisle.Server()
+                server = birdisle.Server()
             kwargs = {
                 'db': db,
                 'password': password,

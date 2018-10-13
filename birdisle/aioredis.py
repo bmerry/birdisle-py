@@ -30,6 +30,7 @@ async def open_birdisle_connection(server=None, *,
 async def create_connection(server=None, *, db=None, password=None, ssl=None,
                             encoding=None, parser=None, loop=None,
                             timeout=None, connection_cls=None):
+    # This code is mostly duplicating the work of aioredis.create_connection
     if timeout is not None and timeout <= 0:
         raise ValueError("Timeout has to be None or a number greater than 0")
 
@@ -64,7 +65,8 @@ async def create_connection(server=None, *, db=None, password=None, ssl=None,
     return conn
 
 
-async def create_redis(server=None, *, commands_factory=aioredis.Redis, **kwargs):
+async def create_redis(server=None, *, commands_factory=aioredis.Redis,
+                       **kwargs):
     """Creates high-level Redis interface.
 
     This function is a coroutine.
@@ -89,4 +91,6 @@ class ConnectionsPool(aioredis.ConnectionsPool):
 async def create_pool(server, *, pool_cls=None, **kwargs):
     if pool_cls is None:
         pool_cls = ConnectionsPool
+    if server is None:
+        server = birdisle.Server()
     return await aioredis.create_pool(server, pool_cls=pool_cls, **kwargs)
