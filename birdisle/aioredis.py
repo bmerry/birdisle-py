@@ -88,7 +88,7 @@ class ConnectionsPool(aioredis.ConnectionsPool):
                                  loop=self._loop)
 
 
-async def create_pool(server, *, pool_cls=None, **kwargs):
+async def create_pool(server=None, *, pool_cls=None, **kwargs):
     if pool_cls is None:
         pool_cls = ConnectionsPool
     if server is None:
