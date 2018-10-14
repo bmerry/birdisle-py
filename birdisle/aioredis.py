@@ -11,7 +11,7 @@ async def open_birdisle_connection(server=None, *,
     # XXX: parser is not used (yet). That's inherited from aioredis,
     # not a birdisle deficiency.
     if server is None:
-        server = birdisle.Server.singleton()
+        server = birdisle.Server()
     sock = server.connect()
     try:
         if loop is None:
