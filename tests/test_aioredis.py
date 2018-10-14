@@ -39,6 +39,15 @@ async def r(server):
     await redis.wait_closed()
 
 
+@pytest.fixture
+@async_generator
+async def redis_pool(server):
+    pool = await birdisle.aioredis.create_redis_pool(server)
+    await yield_(pool)
+    pool.close()
+    await pool.wait_closed()
+
+
 @pytest.mark.asyncio
 async def test_create_connection(conn):
     await conn.execute('set', 'hello', 'create_redis')
@@ -58,3 +67,11 @@ async def test_create_redis(r):
     await r.set('hello', 'world')
     val = await r.get('hello')
     assert val == b'world'
+
+@pytest.mark.asyncio
+async def test_pubsub(redis_pool):
+    res = await redis_pool.subscribe('chan')
+    channel = res[0]
+    await redis_pool.publish('chan', 'hello')
+    msg = await channel.get()
+    assert msg == b'hello'
