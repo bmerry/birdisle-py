@@ -94,3 +94,9 @@ async def create_pool(server=None, *, pool_cls=None, **kwargs):
     if server is None:
         server = birdisle.Server()
     return await aioredis.create_pool(server, pool_cls=pool_cls, **kwargs)
+
+
+async def create_redis_pool(server=None, *, commands_factory=aioredis.Redis,
+                            **kwargs):
+    pool = await create_pool(server, **kwargs)
+    return commands_factory(pool)
