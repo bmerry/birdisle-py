@@ -4,6 +4,13 @@ from setuptools import setup, find_packages
 with open('README.md', 'r') as f:
     long_description = f.read()
 
+tests_require = [
+    'pytest', 'pytest-forked', 'redis',
+    'pytest-asyncio; python_version >= "3.5"',
+    'async-generator; python_version >= "3.5"',
+    'aioredis; python_version >= "3.5"'
+]
+
 setup(
     name='birdisle',
     version='0.1',
@@ -30,8 +37,9 @@ setup(
     install_requires=['cffi>=1.0.0'],
     extras_require={
         'redis': 'redis',
-        'aioredis': 'aioredis'
+        'aioredis': 'aioredis',
+        'test': tests_require
     },
-    tests_require=['pytest', 'pytest-forked'],
+    tests_require=tests_require,
     cffi_modules=['builder.py:ffibuilder']
 )
