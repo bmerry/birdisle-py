@@ -57,6 +57,14 @@ def test_repr(r):
     repr(r)
 
 
+def test_use_after_closed(server):
+    server.close()
+    with pytest.raises(RuntimeError):
+        server.connect()
+    with pytest.raises(RuntimeError):
+        server.add_connection(0)
+
+
 def test_locale():
     try:
         locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
