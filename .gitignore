@@ -4,6 +4,8 @@ _birdisle*.so
 /dist
 /build
 /wheelhouse
+/htmlcov
 *.egg-info
 .cache
 .pytest_cache
+.coverage
