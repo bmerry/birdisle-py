@@ -42,7 +42,7 @@ class Server(object):
 
     def close(self):
         if self._handle is None:
-            raise RuntimeError("Server is already closed")
+            return    # Already closed
         ret = _birdisle.lib.birdisleStopServer(self._handle)
         self._handle = None
         if ret != 0:
