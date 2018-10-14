@@ -1,5 +1,6 @@
 from async_generator import yield_, async_generator
 import pytest
+import aioredis
 
 import birdisle.aioredis
 
@@ -75,3 +76,20 @@ async def test_pubsub(redis_pool):
     await redis_pool.publish('chan', 'hello')
     msg = await channel.get()
     assert msg == b'hello'
+
+
+@pytest.mark.asyncio
+async def test_auth(server):
+    r1 = await birdisle.aioredis.create_redis(server)
+    await r1.config_set('requirepass', 'p@ssword')
+    await r1.auth('p@ssword')
+    await r1.set('foo', 'bar')
+    r1.close()
+    await r1.wait_closed()
+
+    with pytest.raises(aioredis.AuthError):
+        r2 = await birdisle.aioredis.create_redis(server)
+        await r2.get('foo')
+
+    r3 = await birdisle.aioredis.create_redis(server, password='p@ssword')
+    assert await r3.get('foo') == b'bar'
