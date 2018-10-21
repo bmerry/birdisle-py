@@ -10,6 +10,7 @@ import birdisle
 
 
 class LocalSocketConnection(redis.connection.Connection):
+    """Socket connection to a Birdisle server"""
     description_format = "LocalSocketConnection<db=%(db)s>"
 
     def __init__(self, server, db=0, password=None,
@@ -99,8 +100,18 @@ class RedisMixin(object):
 
 
 class StrictRedis(RedisMixin, redis.StrictRedis):
+    """Replacement for :class:`redis.StrictRedis` that connects to a birdisle server.
+
+    :param server: Server state (keyword only). If unspecified, a new one is created.
+    :type server: :class:`birdisle.Server`
+    """
     pass
 
 
 class Redis(RedisMixin, redis.Redis):
+    """Replacement for :class:`redis.Redis` that connects to a birdisle server.
+
+    :param server: Server state (keyword only). If unspecified, a new one is created.
+    :type server: :class:`birdisle.Server`
+    """
     pass

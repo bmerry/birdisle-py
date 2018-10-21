@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+
+"""Run a redis server equivalent.
+
+Note: don't use this in production! Use an actual redis server, which will do
+things like making sure the data is persisted before shutdown.
+"""
+
 import contextlib
 import socket
 import os

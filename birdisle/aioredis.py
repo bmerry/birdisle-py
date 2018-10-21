@@ -8,6 +8,15 @@ import birdisle
 async def open_birdisle_connection(server=None, *,
                                    limit, loop=None,
                                    parser=None, **kwargs):
+    """Create an asyncio connection to a birdisle server.
+
+    :param server: Server to connect to (if not specified, a new one is created).
+    :type server: :class:`birdisle.Server`
+    :param limit: Maximum message length for the reader
+    :type limit: int
+    :param loop: Event loop
+    :type loop: :class:`asyncio.AbstractEventLoop`
+    """
     # XXX: parser is not used (yet). That's inherited from aioredis,
     # not a birdisle deficiency.
     if server is None:
@@ -30,6 +39,15 @@ async def open_birdisle_connection(server=None, *,
 async def create_connection(server=None, *, db=None, password=None, ssl=None,
                             encoding=None, parser=None, loop=None,
                             timeout=None, connection_cls=None):
+    """Create redis connection to a birdisle server.
+
+    For details refer to :func:`aioredis.create_connection`.
+
+    This function is a coroutine.
+
+    :param server: Server to connect to (if not specified, a new one is created).
+    :type server: :class:`birdisle.Server`
+    """
     # This code is mostly duplicating the work of aioredis.create_connection
     if timeout is not None and timeout <= 0:
         raise ValueError("Timeout has to be None or a number greater than 0")
@@ -67,7 +85,9 @@ async def create_connection(server=None, *, db=None, password=None, ssl=None,
 
 async def create_redis(server=None, *, commands_factory=aioredis.Redis,
                        **kwargs):
-    """Creates high-level Redis interface.
+    """Create high-level Redis interface to a birdisle server.
+
+    For details refer to :func:`aioredis.create_redis`.
 
     This function is a coroutine.
     """
@@ -89,6 +109,12 @@ class ConnectionsPool(aioredis.ConnectionsPool):
 
 
 async def create_pool(server=None, *, pool_cls=None, **kwargs):
+    """Create pool of low-level connections to a birdisle server.
+
+    For details refer to :func:`aioredis.create_pool`.
+
+    This function is a coroutine.
+    """
     if pool_cls is None:
         pool_cls = ConnectionsPool
     if server is None:
@@ -98,5 +124,11 @@ async def create_pool(server=None, *, pool_cls=None, **kwargs):
 
 async def create_redis_pool(server=None, *, commands_factory=aioredis.Redis,
                             **kwargs):
+    """Create pool of high-level redis connections to a birdisle server.
+
+    For details refer to :func:`aioredis.create_redis_pool`.
+
+    This function is a coroutine.
+    """
     pool = await create_pool(server, **kwargs)
     return commands_factory(pool)
