@@ -11,7 +11,7 @@ ffibuilder = FFI()
 ffibuilder.cdef("""
     typedef struct birdisleServer birdisleServer;
 
-    birdisleServer *birdisleStartServer(void);
+    birdisleServer *birdisleStartServer(const char *config);
     int birdisleStopServer(birdisleServer *handle);
     void birdisleAddConnection(birdisleServer *handle, int fd);
 """)

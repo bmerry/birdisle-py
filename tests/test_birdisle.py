@@ -120,7 +120,7 @@ def test_disabled_bgsave(r):
     assert 'birdisle' in str(excinfo.value)
 
 
-def test_assert_bgrewriteaof(r):
+def test_disabled_bgrewriteaof(r):
     with pytest.raises(redis.ResponseError) as excinfo:
         r.bgrewriteaof()
     assert 'birdisle' in str(excinfo.value)
@@ -130,6 +130,14 @@ def test_enable_aof(r):
     with pytest.raises(redis.ResponseError) as excinfo:
         r.config_set('appendonly', 'yes')
     assert 'birdisle' in str(excinfo.value)
+
+
+def test_config_string():
+    server = birdisle.Server('dbfilename birdisletest.rdb')
+    r = birdisle.redis.StrictRedis(server=server)
+    dbfilename = r.config_get('dbfilename')['dbfilename']
+    assert dbfilename == 'birdisletest.rdb'
+    server.close()
 
 
 def test_fd_leak(limit_fds):

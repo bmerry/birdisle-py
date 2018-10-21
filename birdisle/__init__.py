@@ -7,8 +7,12 @@ from . import _birdisle
 
 
 class Server(object):
-    def __init__(self):
-        self._handle = _birdisle.lib.birdisleStartServer()
+    def __init__(self, config=None):
+        if config is None:
+            config = ""
+        if not isinstance(config, bytes):
+            config = config.encode()
+        self._handle = _birdisle.lib.birdisleStartServer(config)
         if self._handle == _birdisle.ffi.NULL:
             raise OSError(_birdisle.ffi.errno,
                           "Failed to create birdisle server")
