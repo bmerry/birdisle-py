@@ -114,6 +114,24 @@ def test_pubsub(r):
                    'type': 'message', 'data': b'hello'}
 
 
+def test_disabled_bgsave(r):
+    with pytest.raises(redis.ResponseError) as excinfo:
+        r.bgsave()
+    assert 'birdisle' in str(excinfo.value)
+
+
+def test_assert_bgrewriteaof(r):
+    with pytest.raises(redis.ResponseError) as excinfo:
+        r.bgrewriteaof()
+    assert 'birdisle' in str(excinfo.value)
+
+
+def test_enable_aof(r):
+    with pytest.raises(redis.ResponseError) as excinfo:
+        r.config_set('appendonly', 'yes')
+    assert 'birdisle' in str(excinfo.value)
+
+
 def test_fd_leak(limit_fds):
     """Servers must not leak file descriptors"""
     for i in range(limit_fds + 1):
