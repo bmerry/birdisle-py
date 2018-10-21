@@ -9,6 +9,7 @@ import birdisle
 def main():
     server = birdisle.Server()
     s = socket.socket()
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(('127.0.0.1', 6380))
     s.listen(5)
     try:
