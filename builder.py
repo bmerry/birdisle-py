@@ -16,9 +16,8 @@ ffibuilder.cdef("""
     void birdisleAddConnection(birdisleServer *handle, int fd);
 """)
 
-ffibuilder.set_source("birdisle._birdisle", """
-    #include "birdisle.h"
-""",
+ffibuilder.set_source(
+    "birdisle._birdisle", '#include "birdisle.h"\n',
     libraries=['birdisle'],
     include_dirs=['src/src'],
     library_dirs=['src/src'],

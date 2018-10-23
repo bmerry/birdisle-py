@@ -1,7 +1,6 @@
 import time
 import threading
 import locale
-import socket
 import resource
 import signal
 

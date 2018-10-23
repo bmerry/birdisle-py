@@ -2,6 +2,7 @@ cffi
 redis
 pytest
 pytest-forked
+flake8
 
 aioredis; python_version>="3.5"
 pytest-asyncio; python_version>="3.5"

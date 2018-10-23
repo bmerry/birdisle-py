@@ -69,6 +69,7 @@ async def test_create_redis(r):
     val = await r.get('hello')
     assert val == b'world'
 
+
 @pytest.mark.asyncio
 async def test_pubsub(redis_pool):
     res = await redis_pool.subscribe('chan')

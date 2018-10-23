@@ -4,7 +4,7 @@ import socket
 import os
 
 from . import _birdisle
-from ._version import __version__
+from ._version import __version__     # noqa: F401
 
 
 class Server(object):
