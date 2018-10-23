@@ -1,8 +1,14 @@
 #!/usr/bin/env python
+import os
+import re
 from setuptools import setup, find_packages
 
 with open('README.md', 'r') as f:
     long_description = f.read()
+
+with open(os.path.join('birdisle', '_version.py'), 'r') as f:
+    match = re.search('__version__ = "([^"]+)"', f.read())
+    version = match.group(1)
 
 tests_require = [
     'pytest', 'pytest-forked', 'redis',
@@ -13,7 +19,7 @@ tests_require = [
 
 setup(
     name='birdisle',
-    version='0.1',
+    version=version,
     author='Bruce Merry',
     author_email='bmerry@gmail.com',
     description='Python bindings for birdisle',

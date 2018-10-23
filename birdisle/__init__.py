@@ -4,6 +4,7 @@ import socket
 import os
 
 from . import _birdisle
+from ._version import __version__
 
 
 class Server(object):

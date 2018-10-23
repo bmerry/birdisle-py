@@ -15,7 +15,10 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-
+import os
+import sys
+import re
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
@@ -23,10 +26,18 @@ project = 'birdisle-py'
 copyright = '2018, Bruce Merry'
 author = 'Bruce Merry'
 
-# The short X.Y version
-version = ''
-# The full version, including alpha/beta/rc tags
-release = ''
+def get_version():
+    root = os.path.dirname(os.path.dirname(__file__))
+    with open(os.path.join(root, 'birdisle', '_version.py'), 'r') as f:
+        content = f.read()
+        match = re.search('__version__ = "([^"]+)"', content)
+    version = match.group(1)
+    release = '.'.join(version.split('.')[:2])
+    return version, release
+
+# version: The short X.Y version
+# release: The full version, including alpha/beta/rc tags
+version, release = get_version()
 
 
 # -- General configuration ---------------------------------------------------
