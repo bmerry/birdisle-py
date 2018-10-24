@@ -1,4 +1,12 @@
 #!/bin/bash
+
+# Release process
+# - Update birdisle/_version.py
+# - Update doc/changelog.rst
+# - Run this script
+# - Upload the source dist and wheels to PyPI
+# - Create a git tag and push it
+
 set -e -u
 
 python - <<EOF
