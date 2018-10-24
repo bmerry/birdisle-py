@@ -12,6 +12,7 @@ Welcome to birdisle-py's documentation!
 
    user
    Reference <modules>
+   changelog
 
 
 Indices and tables
