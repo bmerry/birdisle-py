@@ -1,8 +1,10 @@
 cffi
 redis
 pytest
-pytest-forked
+pytest-cov
 flake8
+coverage
+coveralls
 
 aioredis; python_version>="3.5"
 pytest-asyncio; python_version>="3.5"

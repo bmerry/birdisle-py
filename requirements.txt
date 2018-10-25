@@ -9,9 +9,15 @@ async-generator==1.10 ; python_version >= "3.5"
 async-timeout==2.0.1 ; python_version >= "3.5"
 atomicwrites==1.2.1       # via pytest
 attrs==18.2.0             # via pytest
+certifi==2018.10.15       # via requests
 cffi==1.11.5
+chardet==3.0.4            # via requests
+coverage==4.5.1
+coveralls==1.5.1
+docopt==0.6.2             # via coveralls
 flake8==3.5.0
 hiredis==0.2.0            # via aioredis
+idna==2.7                 # via requests
 mccabe==0.6.1             # via flake8
 more-itertools==4.3.0     # via pytest
 pluggy==0.7.1             # via pytest
@@ -20,7 +26,9 @@ pycodestyle==2.3.1        # via flake8
 pycparser==2.19           # via cffi
 pyflakes==1.6.0           # via flake8
 pytest-asyncio==0.9.0 ; python_version >= "3.5"
-pytest-forked==0.2
+pytest-cov==2.6.0
 pytest==3.8.2
 redis==2.10.6
+requests==2.20.0          # via coveralls
 six==1.11.0               # via more-itertools, pytest
+urllib3==1.24             # via requests

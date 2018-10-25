@@ -1,0 +1,4 @@
+[paths]
+source =
+    birdisle/
+    */site-packages/birdisle/
