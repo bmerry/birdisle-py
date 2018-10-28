@@ -24,8 +24,13 @@ class Server(object):
             config = config.encode()
         self._handle = _birdisle.lib.birdisleStartServer(config)
         if self._handle == _birdisle.ffi.NULL:
-            raise OSError(_birdisle.ffi.errno,
-                          "Failed to create birdisle server")
+            errno = _birdisle.ffi.errno
+            self._handle = None
+            if errno:
+                raise OSError(errno,
+                              "Failed to create birdisle server")
+            else:
+                raise RuntimeError("Failed to create birdisle server")
 
     def add_connection(self, fd):
         """Give the server a new client socket.

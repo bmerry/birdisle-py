@@ -172,3 +172,8 @@ def test_signals(r, profile_timer):
     data = b'?' * 10000
     for i in range(10000):
         r.set('foo', data)
+
+
+def test_bad_config():
+    with pytest.raises(RuntimeError):
+        birdisle.Server('not a valid config file')
