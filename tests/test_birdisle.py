@@ -157,6 +157,7 @@ def test_shared_server(server):
     assert b.get('foo') == b'bar'
 
 
+@pytest.mark.skipif(redis.__version__ >= '3.0.0', reason="removed in redis-py 3.0")
 def test_non_strict(server):
     r = birdisle.redis.Redis(server=server)
     r.zadd('foo', 'bar', 3)
