@@ -1,6 +1,11 @@
 Release history
 ===============
 
+0.1.2
+-----
+- Support redis-py 3.0
+- Update vendored birdisle (reduces memory usage)
+
 0.1.1
 -----
 - Update README.md
