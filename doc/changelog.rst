@@ -1,6 +1,10 @@
 Release history
 ===============
 
+0.1.3
+-----
+- Update vendored birdisle to redis 5.0.3
+
 0.1.2
 -----
 - Support redis-py 3.0
