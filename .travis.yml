@@ -6,6 +6,7 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
+  - "3.9"
 install:
   - pip install -U pip setuptools wheel
   - pip install -r requirements.txt
@@ -13,6 +14,6 @@ install:
 script:
   # Workaround for https://github.com/pytest-dev/pytest-cov/issues/98
   - (cd tests && pytest --cov=birdisle --cov-branch) && coverage combine tests/.coverage
-  - if [[ "$TRAVIS_PYTHON_VERSION" == 3.6 ]]; then flake8; fi
+  - if [[ "$TRAVIS_PYTHON_VERSION" == 3.9 ]]; then flake8; fi
 after_success:
   - coveralls
