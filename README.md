@@ -1,3 +1,8 @@
+# Maintainer wanted
+
+I've ended up not using birdisle and have no interest in maintaining it. If you
+would like to take over as maintainer, please let me know by filing a ticket.
+
 # birdisle-py
 
 [![Build Status](https://travis-ci.org/bmerry/birdisle-py.svg?branch=master)](https://travis-ci.org/bmerry/birdisle-py)
