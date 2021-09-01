@@ -1,0 +1,42 @@
+name: Build and test
+on: [push, pull_request]
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -U pip setuptools wheel
+      - run: pip install -r requirements.txt
+      - run: flake8
+      - run: pip install .
+      - run: pytest
+  cibuildwheel:
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.1.1
+        env:
+          CIBW_ARCHS_LINUX: auto aarch64
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
