@@ -42,7 +42,7 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: auto aarch64
           # Build against Python 3.10 release candidate doesn't work yet
-        CIBW_REQUIRES_PYTHON: ">=3.6,<3.10"
+          CIBW_REQUIRES_PYTHON: ">=3.6,<3.10"
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
