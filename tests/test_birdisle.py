@@ -70,13 +70,13 @@ def test_locale():
     except locale.Error:
         pytest.skip()
     # Confirm that this is a locale which doesn't use the decimal point
-    assert locale.format('%g', 1.5) == '1,5'
+    assert locale.format_string('%g', 1.5) == '1,5'
     r = birdisle.redis.StrictRedis()
     r.set('foo', b'1.5')
     r.incrbyfloat('foo', b'0.25')
     assert r.get('foo') == b'1.75'
     # Check that birdisle hasn't overridden this thread's locale
-    assert locale.format('%g', 1.5) == '1,5'
+    assert locale.format_string('%g', 1.5) == '1,5'
 
 
 def test_lua(r):
