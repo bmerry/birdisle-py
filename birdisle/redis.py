@@ -49,7 +49,7 @@ class LocalSocketConnection(redis.connection.Connection):
             return "Error connecting to local redis: %s." % \
                 (exception.args[0])
         else:
-            return "Error %s connecting to local redis: %s. %s." % \
+            return "Error %s connecting to local redis: %s." % \
                 (exception.args[0], exception.args[1])
 
 
