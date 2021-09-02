@@ -15,3 +15,4 @@ exclude src/src/redis-server
 exclude src/src/release.h
 exclude src/deps/lua/src/lua
 exclude src/deps/lua/src/luac
+prune src/tests/tmp
