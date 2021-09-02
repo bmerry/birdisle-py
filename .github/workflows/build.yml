@@ -39,4 +39,5 @@ jobs:
         uses: pypa/cibuildwheel@v2.1.1
       - uses: actions/upload-artifact@v2
         with:
+          name: Wheels
           path: ./wheelhouse/*.whl
