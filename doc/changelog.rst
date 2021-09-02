@@ -1,6 +1,12 @@
 Release history
 ===============
 
+0.2.1
+-----
+- Fix ``from_url``
+- Fix a segfault if small integers are stored in the database at shutdown
+- Clarify that only Linux with glibc is supported
+
 0.2.0
 -----
 - Update vendored birdisle to redis 5.0.12
