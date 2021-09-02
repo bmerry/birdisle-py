@@ -1,7 +1,15 @@
-import pytest
+import sys
+
 import aioredis
+import pytest
 
 import birdisle.aioredis
+
+
+pytestmark = pytest.mark.skipif(
+    sys.version_info[:3] >= (3, 10, 0),
+    reason="aioredis 1.x does not work with Python 3.10"
+)
 
 
 @pytest.fixture
