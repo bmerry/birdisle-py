@@ -11,30 +11,18 @@ import birdisle
 
 class LocalSocketConnection(redis.connection.Connection):
     """Socket connection to a Birdisle server"""
-    description_format = "LocalSocketConnection<db=%(db)s>"
 
-    def __init__(self, server, db=0, password=None,
-                 socket_timeout=None, encoding='utf-8',
-                 encoding_errors='strict', decode_responses=False,
-                 retry_on_timeout=False,
-                 parser_class=redis.connection.DefaultParser,
-                 socket_read_size=65536):
-        # This code is mostly copied from redis.connection.UnixConnection
-        self.pid = os.getpid()
-        self.db = 0
-        self.password = password
-        self.socket_timeout = socket_timeout
-        self.retry_on_timeout = retry_on_timeout
-        self.encoder = redis.connection.Encoder(
-            encoding, encoding_errors, decode_responses)
+    def __init__(self, server, **kwargs):
+        super().__init__(**kwargs)
         self._server = server
-        self._sock = None
-        self._parser = parser_class(socket_read_size=socket_read_size)
-        self._description_args = {
-            'db': self.db
-        }
-        self._connect_callbacks = []
-        self._buffer_cutoff = 6000
+
+    def repr_pieces(self):
+        pieces = [
+            ('db', self.db)
+        ]
+        if self.client_name:
+            pieces.append(('client_name', self.client_name))
+        return pieces
 
     def _connect(self):
         """Create a connection to in-process redis server"""
@@ -54,7 +42,7 @@ class LocalSocketConnection(redis.connection.Connection):
 
 
 class RedisMixin(object):
-    def __init__(self, host='localhost', port=6379,
+    def __init__(self, server=None, host='localhost', port=6379,
                  db=0, password=None, socket_timeout=None,
                  socket_connect_timeout=None,
                  socket_keepalive=None, socket_keepalive_options=None,
@@ -63,8 +51,10 @@ class RedisMixin(object):
                  charset=None, errors=None,
                  decode_responses=False, retry_on_timeout=False,
                  ssl=False, ssl_keyfile=None, ssl_certfile=None,
-                 ssl_cert_reqs=None, ssl_ca_certs=None,
-                 max_connections=None, server=None):
+                 ssl_cert_reqs='required', ssl_ca_certs=None,
+                 ssl_check_hostname=False,
+                 max_connections=None, single_connection_client=False,
+                 health_check_interval=0, client_name=None, username=None):
         if not connection_pool:
             # Adapted from redis-py
             if charset is not None:
@@ -80,6 +70,7 @@ class RedisMixin(object):
                 server = birdisle.Server()
             kwargs = {
                 'db': db,
+                'username': username,
                 'password': password,
                 'socket_timeout': socket_timeout,
                 'encoding': encoding,
@@ -87,17 +78,20 @@ class RedisMixin(object):
                 'decode_responses': decode_responses,
                 'retry_on_timeout': retry_on_timeout,
                 'max_connections': max_connections,
+                'health_check_interval': health_check_interval,
+                'client_name': client_name,
                 'connection_class': LocalSocketConnection,
                 'server': server
             }
             connection_pool = redis.connection.ConnectionPool(**kwargs)
-        super(RedisMixin, self).__init__(
+        super().__init__(
             host, port, db, password, socket_timeout, socket_connect_timeout,
             socket_keepalive, socket_keepalive_options, connection_pool,
             unix_socket_path, encoding, encoding_errors, charset, errors,
             decode_responses, retry_on_timeout,
             ssl, ssl_keyfile, ssl_certfile, ssl_cert_reqs, ssl_ca_certs,
-            max_connections)
+            ssl_check_hostname, max_connections, single_connection_client,
+            health_check_interval, client_name, username)
 
 
 class StrictRedis(RedisMixin, redis.StrictRedis):

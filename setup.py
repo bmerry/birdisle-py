@@ -44,7 +44,7 @@ setup(
     setup_requires=['cffi>=1.0.0'],
     install_requires=['cffi>=1.0.0'],
     extras_require={
-        'redis': 'redis',
+        'redis': 'redis>=3.4.1',
         'aioredis': 'aioredis<2',
         'test': tests_require
     },
