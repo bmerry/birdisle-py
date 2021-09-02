@@ -30,7 +30,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -50,5 +49,6 @@ setup(
         'test': tests_require
     },
     tests_require=tests_require,
+    python_requires=">=3.6",
     cffi_modules=['builder.py:ffibuilder']
 )
