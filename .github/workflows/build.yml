@@ -39,7 +39,8 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.9"
-      - run: pip install -U pip setuptools wheel build
+      - run: pip install -U pip setuptools wheel
+      - run: pip install build==0.6.0.post1
       - run: python -m build --sdist .
       - uses: actions/upload-artifact@v2
         with:
