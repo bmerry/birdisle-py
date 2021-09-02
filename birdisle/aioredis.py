@@ -58,8 +58,6 @@ async def create_connection(server=None, *, db=None, password=None, ssl=None,
     else:
         cls = aioredis.RedisConnection
 
-    loop = asyncio.get_event_loop()
-
     aioredis.log.logger.debug("Creating birdisle connection to %r", server)
     reader, writer = await asyncio.wait_for(open_birdisle_connection(
         server, ssl=ssl, limit=aioredis.connection.MAX_CHUNK_SIZE),
