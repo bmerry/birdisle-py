@@ -12,9 +12,8 @@ with open(os.path.join('birdisle', '_version.py'), 'r') as f:
 
 tests_require = [
     'pytest', 'pytest-forked', 'redis',
-    'pytest-asyncio; python_version >= "3.5"',
-    'async-generator; python_version >= "3.5"',
-    'aioredis; python_version >= "3.5"'
+    'pytest-asyncio',
+    'aioredis'
 ]
 
 setup(
@@ -47,7 +46,7 @@ setup(
     install_requires=['cffi>=1.0.0'],
     extras_require={
         'redis': 'redis',
-        'aioredis': 'aioredis',
+        'aioredis': 'aioredis<2',
         'test': tests_require
     },
     tests_require=tests_require,

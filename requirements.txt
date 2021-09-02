@@ -4,74 +4,67 @@
 #
 #    pip-compile requirements.in
 #
-aioredis==1.3.0 ; python_version >= "3.5"
+aioredis==1.3.1
     # via -r requirements.in
-async-generator==1.10 ; python_version >= "3.5"
-    # via -r requirements.in
-async-timeout==3.0.1 ; python_version >= "3.5"
-    # via
-    #   -r requirements.in
-    #   aioredis
-atomicwrites==1.3.0
+async-timeout==3.0.1
+    # via aioredis
+attrs==21.2.0
     # via pytest
-attrs==19.1.0
-    # via pytest
-certifi==2019.3.9
+certifi==2021.5.30
     # via requests
-cffi==1.12.3
+cffi==1.14.6
     # via -r requirements.in
 charset-normalizer==2.0.4
     # via requests
-coverage==4.5.3
+coverage==5.5
     # via
     #   -r requirements.in
     #   coveralls
     #   pytest-cov
-coveralls==1.7.0
+coveralls==3.2.0
     # via -r requirements.in
 docopt==0.6.2
     # via coveralls
-entrypoints==0.3
-    # via flake8
-flake8==3.7.7
+flake8==3.9.2
     # via -r requirements.in
-hiredis==1.0.0
+hiredis==2.0.0
     # via aioredis
-idna==2.8
+idna==3.2
     # via requests
+iniconfig==1.1.1
+    # via pytest
 mccabe==0.6.1
     # via flake8
-more-itertools==5.0.0
+packaging==21.0
     # via pytest
-pluggy==0.9.0
+pluggy==1.0.0
     # via pytest
 py==1.10.0
     # via pytest
-pycodestyle==2.5.0
+pycodestyle==2.7.0
     # via flake8
-pycparser==2.19
+pycparser==2.20
     # via cffi
-pyflakes==2.1.1
+pyflakes==2.3.1
     # via flake8
-pytest==4.4.1
+pyparsing==2.4.7
+    # via packaging
+pytest==6.2.5
     # via
     #   -r requirements.in
     #   pytest-asyncio
     #   pytest-cov
-pytest-asyncio==0.10.0 ; python_version >= "3.5"
+pytest-asyncio==0.15.1
     # via -r requirements.in
-pytest-cov==2.6.1
+pytest-cov==2.12.1
     # via -r requirements.in
-redis==3.2.1
+redis==3.5.3
     # via -r requirements.in
 requests==2.26.0
     # via coveralls
-six==1.12.0
+toml==0.10.2
     # via
-    #   more-itertools
     #   pytest
+    #   pytest-cov
 urllib3==1.26.6
     # via requests
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools
