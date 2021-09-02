@@ -20,7 +20,7 @@ def server():
 @pytest.fixture
 def r(server):
     redis = birdisle.redis.StrictRedis(server=server)
-    yield redis
+    return redis
 
 
 @pytest.fixture
@@ -164,6 +164,16 @@ def test_shared_server(server):
     b.flushall()
     a.set('foo', 'bar')
     assert b.get('foo') == b'bar'
+
+
+@pytest.mark.parametrize('url', ['unix:///some/path/?db=7', 'redis://host.invalid:12345/7'])
+def test_from_url(server, url):
+    r = birdisle.redis.StrictRedis.from_url(url, server=server)
+    r.set('hello', 'world')
+    assert r.get('hello') == b'world'
+    # Check that we're using DB 7 (more specifically, not 0) by swapping it away
+    r.swapdb(7, 8)
+    assert r.get('hello') is None
 
 
 def test_signals(r, profile_timer):

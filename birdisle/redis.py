@@ -92,6 +92,20 @@ class RedisMixin(object):
             ssl_check_hostname, max_connections, single_connection_client,
             health_check_interval, client_name, username)
 
+    @classmethod
+    def from_url(cls, url, db=None, **kwargs):
+        server = kwargs.pop('server', None)
+        if server is None:
+            server = birdisle.Server()
+        self = super().from_url(url, db, **kwargs)
+        self.connection_pool.connection_class = LocalSocketConnection
+        self.connection_pool.connection_kwargs['server'] = server
+        # When url is a unix:// URL, connection_kwargs will include 'path',
+        # but LocalSocketConnection does not expect that (because the base
+        # class does not).
+        self.connection_pool.connection_kwargs.pop('path', None)
+        return self
+
 
 class StrictRedis(RedisMixin, redis.StrictRedis):
     """Replacement for :class:`redis.StrictRedis` that connects to a birdisle server.
