@@ -157,13 +157,6 @@ def test_shared_server(server):
     assert b.get('foo') == b'bar'
 
 
-@pytest.mark.skipif(redis.__version__ >= '3.0.0', reason="removed in redis-py 3.0")
-def test_non_strict(server):
-    r = birdisle.redis.Redis(server=server)
-    r.zadd('foo', 'bar', 3)
-    assert r.zrange('foo', 0, -1, withscores=True) == [(b'bar', 3)]
-
-
 def test_signals(r, profile_timer):
     """Test that signal delivery doesn't interfere with birdisle"""
     def handler(signum, frame):
