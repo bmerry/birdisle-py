@@ -91,6 +91,15 @@ def test_info(r):
     r.info()
 
 
+def test_small_integer(r):
+    """Regression test for https://github.com/bmerry/birdisle-py/issues/25.
+
+    This test won't fail even if the bug is present, but may cause a segfault
+    during cleanup due to a use-after-free.
+    """
+    r.set('foo', 1)
+
+
 def test_blocking(r):
     def worker(r):
         time.sleep(0.1)
