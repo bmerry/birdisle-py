@@ -29,6 +29,22 @@ jobs:
       - run: flake8
       - run: pip install .
       - run: pytest
+  sdist:
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - run: pip install -U pip setuptools wheel build
+      - run: python -m build --sdist .
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sdist
+          path: ./dist/*.tar.gz
   cibuildwheel:
     needs: test
     runs-on: ubuntu-20.04
@@ -40,5 +56,5 @@ jobs:
         uses: pypa/cibuildwheel@v2.1.1
       - uses: actions/upload-artifact@v2
         with:
-          name: Wheels
+          name: wheels
           path: ./wheelhouse/*.whl
