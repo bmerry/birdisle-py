@@ -31,7 +31,7 @@ async def open_birdisle_connection(server=None, *,
     except Exception:
         sock.close()
         raise
-    writer = asyncio.StreamWriter(transport, protocol, reader)
+    writer = asyncio.StreamWriter(transport, protocol, reader, loop)
     return reader, writer
 
 
