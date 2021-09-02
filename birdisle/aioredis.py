@@ -14,7 +14,7 @@ async def open_birdisle_connection(server=None, *,
     :type server: :class:`birdisle.Server`
     :param limit: Maximum message length for the reader
     :type limit: int
-    :param loop: Event loop
+    :param loop: Event loop (ignored, for backwards compatibility only)
     :type loop: :class:`asyncio.AbstractEventLoop`
     """
     # XXX: parser is not used (yet). That's inherited from aioredis,
@@ -23,16 +23,15 @@ async def open_birdisle_connection(server=None, *,
         server = birdisle.Server()
     sock = server.connect()
     try:
-        if loop is None:
-            loop = asyncio.get_event_loop()
-        reader = aioredis.stream.StreamReader(limit=limit, loop=loop)
-        protocol = asyncio.StreamReaderProtocol(reader, loop=loop)
+        loop = asyncio.get_event_loop()
+        reader = aioredis.stream.StreamReader(limit=limit)
+        protocol = asyncio.StreamReaderProtocol(reader)
         transport, _ = await loop.create_connection(
             lambda: protocol, sock=sock, **kwargs)
     except Exception:
         sock.close()
         raise
-    writer = asyncio.StreamWriter(transport, protocol, reader, loop)
+    writer = asyncio.StreamWriter(transport, protocol, reader)
     return reader, writer
 
 
@@ -59,17 +58,15 @@ async def create_connection(server=None, *, db=None, password=None, ssl=None,
     else:
         cls = aioredis.RedisConnection
 
-    if loop is None:
-        loop = asyncio.get_event_loop()
+    loop = asyncio.get_event_loop()
 
     aioredis.log.logger.debug("Creating birdisle connection to %r", server)
     reader, writer = await asyncio.wait_for(open_birdisle_connection(
-        server, ssl=ssl, limit=aioredis.connection.MAX_CHUNK_SIZE, loop=loop),
-        timeout, loop=loop)
+        server, ssl=ssl, limit=aioredis.connection.MAX_CHUNK_SIZE),
+        timeout)
 
     conn = cls(reader, writer, encoding=encoding,
-               address=server, parser=parser,
-               loop=loop)
+               address=server, parser=parser)
 
     try:
         if password is not None:
@@ -104,8 +101,7 @@ class ConnectionsPool(aioredis.ConnectionsPool):
                                  encoding=self._encoding,
                                  parser=self._parser_class,
                                  timeout=self._create_connection_timeout,
-                                 connection_cls=self._connection_cls,
-                                 loop=self._loop)
+                                 connection_cls=self._connection_cls)
 
 
 async def create_pool(server=None, *, pool_cls=None, **kwargs):
