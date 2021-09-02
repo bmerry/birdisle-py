@@ -5,3 +5,5 @@ python:
     - requirements: requirements.txt
     - method: pip
       path: .
+sphinx:
+  configuration: doc/conf.py
