@@ -17,6 +17,9 @@ libraries.
 .. _redis-py: https://redis-py.readthedocs.io/
 .. _aioredis: https://aioredis.readthedocs.io/
 
+Birdisle is only supported on Linux, and does not currently work with Alpine
+(or any distribution that uses musl rather than glibc).
+
 Server class
 ------------
 
