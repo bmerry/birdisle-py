@@ -93,11 +93,11 @@ class RedisMixin(object):
             health_check_interval, client_name, username)
 
     @classmethod
-    def from_url(cls, url, db=None, **kwargs):
+    def from_url(cls, url, **kwargs):
         server = kwargs.pop('server', None)
         if server is None:
             server = birdisle.Server()
-        self = super().from_url(url, db, **kwargs)
+        self = super().from_url(url, **kwargs)
         self.connection_pool.connection_class = LocalSocketConnection
         self.connection_pool.connection_kwargs['server'] = server
         # When url is a unix:// URL, connection_kwargs will include 'path',
