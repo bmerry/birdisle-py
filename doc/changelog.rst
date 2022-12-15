@@ -1,6 +1,13 @@
 Release history
 ===============
 
+0.2.2
+-----
+- Update ``from_url`` to work with newer versions of redis-py (this might
+  break older versions, although it hasn't been tested).
+- Test and build wheels for newer Python versions (up to CPython 3.11 and PyPy
+  3.9).
+
 0.2.1
 -----
 - Fix ``from_url``
